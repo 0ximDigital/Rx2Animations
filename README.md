@@ -7,7 +7,7 @@ RxAnimations is a library with the main goal to make android animations more sol
 
 Library version for the rxJava2 is expected soon.
 
-If you are using rxJava 1 take a look [here](https://github.com/0ximDigital/Rx2Animations).
+If you are using rxJava 1 take a look [here](https://github.com/0ximDigital/RxAnimations).
 
 
   
