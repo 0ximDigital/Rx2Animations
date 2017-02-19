@@ -1,1 +1,1 @@
-include ':sample-app', ':rxanim'
+include ':sample-app', ':rx2anim'
