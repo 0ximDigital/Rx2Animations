@@ -5,11 +5,12 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.view.View;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
-import io.reactivex.android.MainThreadDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 import static io.reactivex.android.MainThreadDisposable.verifyMainThread;
@@ -18,63 +19,71 @@ public final class AnimateCompletable extends Completable {
 
     private static final int NONE = 0;
 
-    private final View view;
+    private final WeakReference<View> viewWeakRef;
+
     private final List<Consumer<ViewPropertyAnimatorCompat>> preTransformActions;
     private final List<Consumer<ViewPropertyAnimatorCompat>> animationActions;
 
-    public AnimateCompletable(View view,
-                              @Nullable final List<Consumer<ViewPropertyAnimatorCompat>> preAnimationActions,
-                              final List<Consumer<ViewPropertyAnimatorCompat>> animationActions) {
-        this.view = view;
-        this.preTransformActions = preAnimationActions;
+    private final Consumer<View> onAnimationCancelAction;
+
+    public static AnimateCompletable forView(final WeakReference<View> viewWeakRef,
+                                             @Nullable final List<Consumer<ViewPropertyAnimatorCompat>> preTransformActions,
+                                             final List<Consumer<ViewPropertyAnimatorCompat>> animationActions,
+                                             final Consumer<View> onAnimationCancelAction) {
+        return new AnimateCompletable(viewWeakRef, preTransformActions, animationActions, onAnimationCancelAction);
+    }
+
+    private AnimateCompletable(final WeakReference<View> viewWeakRef,
+                               @Nullable final List<Consumer<ViewPropertyAnimatorCompat>> preTransformActions,
+                               final List<Consumer<ViewPropertyAnimatorCompat>> animationActions,
+                               final Consumer<View> onAnimationCancelAction) {
+        this.viewWeakRef = viewWeakRef;
+        this.preTransformActions = preTransformActions;
         this.animationActions = animationActions;
+        this.onAnimationCancelAction = onAnimationCancelAction;
     }
 
     @Override
-    protected void subscribeActual(CompletableObserver completableObserver) {
+    protected void subscribeActual(final CompletableObserver completableObserver) {
         verifyMainThread();
+        final View view = viewWeakRef.get();
+        if (view == null) {
+            completableObserver.onComplete();
+            return;
+        }
+
         final ViewPropertyAnimatorCompat animator = ViewCompat.animate(view);
-        Listener listener = new Listener(animator);
-        completableObserver.onSubscribe(listener);
+
+        completableObserver.onSubscribe(createAnimationDisposable(animator, onAnimationCancelAction));
 
         if (preTransformActions != null) {
-            for (final Consumer<ViewPropertyAnimatorCompat> action1 : preTransformActions) {
-                try {
-                    action1.accept(animator);
-                } catch (Exception ignore1) {
-                }
-            }
-            animator.setDuration(NONE)
-                    .setStartDelay(NONE)
-                    .withEndAction(() -> callAnimateActions(completableObserver, animator))
+            applyActions(preTransformActions, animator);
+            animator.setDuration(NONE).setStartDelay(NONE)
+                    .withEndAction(() -> runAnimation(completableObserver, animator))
                     .start();
         } else {
-            callAnimateActions(completableObserver, animator);
+            runAnimation(completableObserver, animator);
         }
     }
 
-    private void callAnimateActions(CompletableObserver completableObserver, ViewPropertyAnimatorCompat animator) {
-        for (final Consumer<ViewPropertyAnimatorCompat> action : animationActions) {
+    private void applyActions(final List<Consumer<ViewPropertyAnimatorCompat>> actions, final ViewPropertyAnimatorCompat animator) {
+        for (final Consumer<ViewPropertyAnimatorCompat> action : actions) {
             try {
                 action.accept(animator);
             } catch (Exception e) {
-                completableObserver.onError(e);
+                e.printStackTrace();
             }
         }
-        animator.withEndAction(completableObserver::onComplete).start();
     }
 
+    private void runAnimation(final CompletableObserver completableObserver, final ViewPropertyAnimatorCompat animator) {
+        applyActions(animationActions, animator);
+        animator.withEndAction(completableObserver::onComplete)
+                .start();
+    }
 
-    private class Listener extends MainThreadDisposable {
-        private final ViewPropertyAnimatorCompat animator;
-
-        private Listener(ViewPropertyAnimatorCompat propertyAnimator) {
-            animator = propertyAnimator;
-        }
-
-        @Override
-        protected void onDispose() {
-            animator.cancel();
-        }
+    private Disposable createAnimationDisposable(final ViewPropertyAnimatorCompat animator,
+                                                 final Consumer<View> animationCancelAction) {
+        return new AnimationDisposable(animator, animationCancelAction);
     }
 }

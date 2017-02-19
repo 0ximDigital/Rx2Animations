@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 
+import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,13 +25,11 @@ public final class RxAnimationBuilder {
     }
 
     public static RxAnimationBuilder animate(final View view, final int duration) {
-        return new RxAnimationBuilder(view, duration, DEFAULT_DELAY,
-                new AccelerateDecelerateInterpolator());
+        return new RxAnimationBuilder(view, duration, DEFAULT_DELAY, new AccelerateDecelerateInterpolator());
     }
 
     public static RxAnimationBuilder animate(final int delay, final View view) {
-        return new RxAnimationBuilder(view, DEFAULT_DURATION, delay,
-                new AccelerateDecelerateInterpolator());
+        return new RxAnimationBuilder(view, DEFAULT_DURATION, delay, new AccelerateDecelerateInterpolator());
     }
 
     public static RxAnimationBuilder animate(final View view, final int duration, final int delay) {
@@ -41,25 +40,24 @@ public final class RxAnimationBuilder {
         return new RxAnimationBuilder(view, DEFAULT_DURATION, DEFAULT_DELAY, interpolator);
     }
 
-    public static RxAnimationBuilder animate(final View view, final int duration, final int delay,
-                                             final Interpolator interpolator) {
+    public static RxAnimationBuilder animate(final View view, final int duration, final int delay, final Interpolator interpolator) {
         return new RxAnimationBuilder(view, duration, delay, interpolator);
     }
 
-    private RxAnimationBuilder(final View view, final int duration, final int delay,
-                               final Interpolator interpolator) {
-        this.view = view;
+    private RxAnimationBuilder(final View view, final int duration, final int delay, final Interpolator interpolator) {
+        this.viewWeakRef = new WeakReference<>(view);
         this.preTransformActions = new LinkedList<>();
         this.animateActions = new LinkedList<>();
 
-        this.animateActions.add(animate -> animate.setDuration(duration)
-                .setStartDelay(delay)
-                .setInterpolator(interpolator));
+        this.animateActions.add(animate -> animate.setDuration(duration).setStartDelay(delay).setInterpolator(interpolator));
     }
 
-    final List<Consumer<ViewPropertyAnimatorCompat>> preTransformActions;
-    final List<Consumer<ViewPropertyAnimatorCompat>> animateActions;
-    final View view;
+    private final List<Consumer<ViewPropertyAnimatorCompat>> preTransformActions;
+    private final List<Consumer<ViewPropertyAnimatorCompat>> animateActions;
+
+    private Consumer<View> onAnimationCancelAction = view -> { };
+
+    final WeakReference<View> viewWeakRef;
 
     public RxAnimationBuilder duration(final int duration) {
         animateActions.add(animate -> animate.setDuration(duration));
@@ -88,13 +86,17 @@ public final class RxAnimationBuilder {
     }
 
     public RxAnimationBuilder rotate(final float rotation) {
-        preTransformActions.add(preTransform -> preTransform.rotation(rotation));
-        animateActions.add(animate -> animate.rotation(0));
+        animateActions.add(animate -> animate.rotation(rotation));
         return this;
     }
 
     public RxAnimationBuilder rotateBy(final float rotation) {
-        preTransformActions.add(preTransform -> preTransform.rotationBy(rotation));
+        animateActions.add(animate -> animate.rotationBy(rotation));
+        return this;
+    }
+
+    public RxAnimationBuilder counterRotateBy(final float rotation) {
+        preTransformActions.add(preTransform -> preTransform.rotationBy(-rotation));
         animateActions.add(animate -> animate.rotationBy(rotation));
         return this;
     }
@@ -144,12 +146,20 @@ public final class RxAnimationBuilder {
         return this;
     }
 
+    public RxAnimationBuilder onAnimationCancel(final Consumer<View> onAnimationCancelAction) {
+        this.onAnimationCancelAction = onAnimationCancelAction;
+        return this;
+    }
+
     public Completable schedule() {
-        return new AnimateCompletable(view, preTransformActions, animateActions);
+        return schedule(true);
     }
 
     public Completable schedule(final boolean preTransform) {
-        return new AnimateCompletable(view, preTransform ? preTransformActions : null, animateActions);
+        return AnimateCompletable.forView(viewWeakRef,
+                                          preTransform ? preTransformActions : null,
+                                          animateActions,
+                                          onAnimationCancelAction);
     }
 
     private static Interpolator defaultInterpolator() {
