@@ -17,13 +17,13 @@ import io.reactivex.Completable;
 import io.reactivex.subjects.BehaviorSubject;
 import oxim.digital.rxanimations.R;
 
-import static oxim.digital.rxanim.RxAnimations.animateTogether;
-import static oxim.digital.rxanim.RxAnimations.enterViewsWithDelay;
-import static oxim.digital.rxanim.RxAnimations.enterWithRotation;
-import static oxim.digital.rxanim.RxAnimations.fadeIn;
-import static oxim.digital.rxanim.RxAnimations.hide;
-import static oxim.digital.rxanim.RxAnimations.hideViewGroupChildren;
-import static oxim.digital.rxanim.RxAnimations.show;
+import static oxim.digital.rx2anim.RxAnimations.animateTogether;
+import static oxim.digital.rx2anim.RxAnimations.enterViewsWithDelay;
+import static oxim.digital.rx2anim.RxAnimations.enterWithRotation;
+import static oxim.digital.rx2anim.RxAnimations.fadeIn;
+import static oxim.digital.rx2anim.RxAnimations.hide;
+import static oxim.digital.rx2anim.RxAnimations.hideViewGroupChildren;
+import static oxim.digital.rx2anim.RxAnimations.show;
 
 public final class ColorPickerActivity extends AppCompatActivity implements ColorPickerContract.View {
 

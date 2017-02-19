@@ -1,4 +1,4 @@
-package oxim.digital.rxanim;
+package oxim.digital.rx2anim;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

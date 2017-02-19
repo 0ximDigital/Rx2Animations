@@ -1,4 +1,4 @@
-package oxim.digital.rxanim;
+package oxim.digital.rx2anim;
 
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;

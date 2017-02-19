@@ -1,4 +1,4 @@
-package oxim.digital.rxanim;
+package oxim.digital.rx2anim;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
 
-import static oxim.digital.rxanim.RxAnimationBuilder.animate;
+import static oxim.digital.rx2anim.RxAnimationBuilder.animate;
 
 public final class RxAnimations {
 

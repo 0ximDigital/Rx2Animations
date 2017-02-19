@@ -1,4 +1,4 @@
-package oxim.digital.rxanim;
+package oxim.digital.rx2anim;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -1,4 +1,4 @@
-package oxim.digital.rxanim;
+package oxim.digital.rx2anim;
 
 import android.animation.ValueAnimator;
 
@@ -8,20 +8,20 @@ import io.reactivex.android.MainThreadDisposable;
 
 import static io.reactivex.android.MainThreadDisposable.verifyMainThread;
 
-public final class RxAnimateValueObservable extends Observable<Object> {
+public final class RxAnimateFractionValueObservable extends Observable<Object> {
 
     private final ValueAnimator valueAnimator;
     private final boolean isReversed;
 
-    public static RxAnimateValueObservable from(final ValueAnimator valueAnimator) {
-        return new RxAnimateValueObservable(valueAnimator, true);
+    public static RxAnimateFractionValueObservable from(final ValueAnimator valueAnimator) {
+        return new RxAnimateFractionValueObservable(valueAnimator, true);
     }
 
-    public static RxAnimateValueObservable fromReversed(final ValueAnimator valueAnimator) {
-        return new RxAnimateValueObservable(valueAnimator, false);
+    public static RxAnimateFractionValueObservable fromReversed(final ValueAnimator valueAnimator) {
+        return new RxAnimateFractionValueObservable(valueAnimator, false);
     }
 
-    private RxAnimateValueObservable(final ValueAnimator valueAnimator, boolean isReversed) {
+    private RxAnimateFractionValueObservable(final ValueAnimator valueAnimator, boolean isReversed) {
         this.valueAnimator = valueAnimator;
         this.isReversed = isReversed;
     }
@@ -55,7 +55,7 @@ public final class RxAnimateValueObservable extends Observable<Object> {
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
             if (!isDisposed()) {
-                observer.onNext(animation.getAnimatedValue());
+                observer.onNext(animation.getAnimatedFraction());
             }
         }
 

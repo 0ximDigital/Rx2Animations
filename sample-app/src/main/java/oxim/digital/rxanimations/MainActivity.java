@@ -8,7 +8,7 @@ import android.view.View;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import oxim.digital.rxanim.RxValueAnimator;
+import oxim.digital.rx2anim.RxValueAnimator;
 
 public class MainActivity extends AppCompatActivity {
 
