@@ -1,4 +1,4 @@
-package oxim.digital.rxanimations.colorpicker;
+package oxim.digital.rx2animations.colorpicker;
 
 import java.util.concurrent.TimeUnit;
 

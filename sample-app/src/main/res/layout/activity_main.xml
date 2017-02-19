@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
-    tools:context="oxim.digital.rxanimations.MainActivity">
+    tools:context="oxim.digital.rx2animations.MainActivity">
 
     <LinearLayout
         android:id="@+id/container"

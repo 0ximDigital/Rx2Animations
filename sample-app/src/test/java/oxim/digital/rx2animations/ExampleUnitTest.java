@@ -1,4 +1,4 @@
-package oxim.digital.rxanimations;
+package oxim.digital.rx2animations;
 
 import org.junit.Test;
 

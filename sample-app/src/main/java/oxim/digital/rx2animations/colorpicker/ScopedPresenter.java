@@ -1,4 +1,4 @@
-package oxim.digital.rxanimations.colorpicker;
+package oxim.digital.rx2animations.colorpicker;
 
 public interface ScopedPresenter<T extends BaseView> {
 

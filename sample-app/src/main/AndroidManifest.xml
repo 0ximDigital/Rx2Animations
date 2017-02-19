@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="oxim.digital.rxanimations"
+<manifest package="oxim.digital.rx2animations"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
@@ -9,17 +9,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
+        <activity android:name="oxim.digital.rx2animations.MainActivity">
+
+        </activity>
+
+        <activity android:name="oxim.digital.rx2animations.colorpicker.ColorPickerActivity"
+                  android:screenOrientation="sensorLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
-
-        <activity android:name=".colorpicker.ColorPickerActivity"
-                  android:screenOrientation="sensorLandscape">
-
         </activity>
     </application>
 

@@ -1,4 +1,4 @@
-package oxim.digital.rxanimations.colorpicker;
+package oxim.digital.rx2animations.colorpicker;
 
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Completable;
 import io.reactivex.subjects.BehaviorSubject;
-import oxim.digital.rxanimations.R;
+import oxim.digital.rx2animations.R;
 
 import static oxim.digital.rx2anim.RxAnimations.animateTogether;
 import static oxim.digital.rx2anim.RxAnimations.enterViewsWithDelay;
