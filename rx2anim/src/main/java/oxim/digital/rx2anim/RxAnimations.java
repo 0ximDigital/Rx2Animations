@@ -147,8 +147,8 @@ public final class RxAnimations {
     }
 
     public static Completable enterTogether(final int delay, final int xOffset, final View... views) {
-        return Observable.fromArray(views)
-                         .flatMapCompletable(view -> enter(view, xOffset, 0));
+        return doAfterDelay(delay, Observable.fromArray(views)
+                                             .flatMapCompletable(view -> enter(view, xOffset, 0)));
     }
 
     public static Completable enterViewsWithDelay(final int delay, final int duration, final int xOffset, final View... views) {
@@ -209,6 +209,12 @@ public final class RxAnimations {
         return Completable.timer(delay, TimeUnit.MILLISECONDS)
                           .observeOn(AndroidSchedulers.mainThread())
                           .concatWith(Completable.fromAction(action));
+    }
+
+    public static Completable doAfterDelay(final int delay, final Completable completable) {
+        return Completable.timer(delay, TimeUnit.MILLISECONDS)
+                          .observeOn(AndroidSchedulers.mainThread())
+                          .concatWith(completable);
     }
 
     public static void set(final View view, final float x, final float y, final float alpha) {
