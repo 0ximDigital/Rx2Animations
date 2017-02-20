@@ -24,11 +24,11 @@ install {
             project {
                 packaging 'aar'
                 groupId 'oxim.digital'
-                artifactId 'rxanim'
+                artifactId 'rx2anim'
 
-                name 'RxAnimations'
+                name 'Rx2Animations'
                 description 'Android animations framework RxZation'
-                url 'https://github.com/0ximDigital/RxAnimations'
+                url 'https://github.com/0ximDigital/Rx2Animations'
 
                 licenses {
                     license {
@@ -44,9 +44,9 @@ install {
                     }
                 }
                 scm {
-                    connection 'https://github.com/0ximDigital/RxAnimations.git'
-                    developerConnection 'https://github.com/0ximDigital/RxAnimations.git'
-                    url 'https://github.com/0ximDigital/RxAnimations'
+                    connection 'https://github.com/0ximDigital/Rx2Animations.git'
+                    developerConnection 'https://github.com/0ximDigital/Rx2Animations.git'
+                    url 'https://github.com/0ximDigital/Rx2Animations'
                 }
             }
         }

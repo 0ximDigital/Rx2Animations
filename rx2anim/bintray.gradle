@@ -38,9 +38,9 @@ artifacts {
 }
 
 ext {
-    siteUrl = 'https://github.com/0ximDigital/RxAnimations'
-    gitUrl = 'https://github.com/0ximDigital/RxAnimations.git'
-    libraryDescription = 'Android animations framework Rx wrapper'
+    siteUrl = 'https://github.com/0ximDigital/Rx2Animations'
+    gitUrl = 'https://github.com/0ximDigital/Rx2Animations.git'
+    libraryDescription = 'Android animations framework Rx2 wrapper'
 }
 
 // Bintray
@@ -54,7 +54,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = 'RxAnimationsRepo'
-        name = 'RxAnimations'
+        name = 'Rx2Animations'
         userOrg = properties.getProperty("bintray.userOrg")
         desc = libraryDescription
         websiteUrl = siteUrl
