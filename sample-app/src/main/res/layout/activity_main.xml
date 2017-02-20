@@ -5,21 +5,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="oxim.digital.rxanimations.MainActivity">
+    android:clipChildren="false"
+    tools:context="oxim.digital.rx2animations.MainActivity">
 
-    <FrameLayout
-        android:id="@+id/sample_view"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@color/color_three">
+        android:clipChildren="false"
+        android:orientation="vertical">
 
         <View
-            android:layout_gravity="center_horizontal"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:id="@+id/top_view"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:background="@color/color_one"/>
+
+        <View
+            android:id="@+id/bottom_view"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:background="@color/color_two"/>
 
-    </FrameLayout>
+    </LinearLayout>
 
 </FrameLayout>
