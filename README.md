@@ -10,7 +10,7 @@ Download
 --------
 
 ```groovy
-  compile 'oxim.digital:rx2anim:0.9.0'
+  compile 'oxim.digital:rx2anim:0.9.1'
     
   compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
   compile 'io.reactivex.rxjava2:rxjava:2.0.6'
